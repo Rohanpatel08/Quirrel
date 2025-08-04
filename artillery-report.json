@@ -1,0 +1,162 @@
+{
+  "aggregate": {
+    "counters": {
+      "vusers.created_by_name.0": 50,
+      "vusers.created": 50,
+      "http.requests": 50,
+      "plugins.metrics-by-endpoint./mysql-query.errors.ETIMEDOUT": 50,
+      "errors.ETIMEDOUT": 50,
+      "vusers.failed": 50
+    },
+    "rates": {
+      "http.request_rate": 1
+    },
+    "firstCounterAt": 1751540324107,
+    "lastCounterAt": 1751540383109,
+    "firstMetricAt": 1751540324107,
+    "lastMetricAt": 1751540383109,
+    "period": 1751540380000,
+    "summaries": {},
+    "histograms": {}
+  },
+  "intermediate": [
+    {
+      "counters": {
+        "vusers.created_by_name.0": 6,
+        "vusers.created": 6,
+        "http.requests": 6
+      },
+      "rates": {
+        "http.request_rate": 1
+      },
+      "http.request_rate": null,
+      "firstCounterAt": 1751540324107,
+      "lastCounterAt": 1751540329108,
+      "firstMetricAt": 1751540324107,
+      "lastMetricAt": 1751540329108,
+      "period": "1751540320000",
+      "summaries": {},
+      "histograms": {}
+    },
+    {
+      "counters": {
+        "vusers.created_by_name.0": 10,
+        "vusers.created": 10,
+        "http.requests": 10,
+        "plugins.metrics-by-endpoint./mysql-query.errors.ETIMEDOUT": 6,
+        "errors.ETIMEDOUT": 6,
+        "vusers.failed": 6
+      },
+      "rates": {
+        "http.request_rate": 1
+      },
+      "http.request_rate": null,
+      "firstCounterAt": 1751540330108,
+      "lastCounterAt": 1751540339109,
+      "firstMetricAt": 1751540330108,
+      "lastMetricAt": 1751540339109,
+      "period": "1751540330000",
+      "summaries": {},
+      "histograms": {}
+    },
+    {
+      "counters": {
+        "vusers.created_by_name.0": 10,
+        "vusers.created": 10,
+        "http.requests": 10,
+        "plugins.metrics-by-endpoint./mysql-query.errors.ETIMEDOUT": 10,
+        "errors.ETIMEDOUT": 10,
+        "vusers.failed": 10
+      },
+      "rates": {
+        "http.request_rate": 1
+      },
+      "http.request_rate": null,
+      "firstCounterAt": 1751540340105,
+      "lastCounterAt": 1751540349108,
+      "firstMetricAt": 1751540340105,
+      "lastMetricAt": 1751540349108,
+      "period": "1751540340000",
+      "summaries": {},
+      "histograms": {}
+    },
+    {
+      "counters": {
+        "vusers.created_by_name.0": 10,
+        "vusers.created": 10,
+        "http.requests": 10,
+        "plugins.metrics-by-endpoint./mysql-query.errors.ETIMEDOUT": 10,
+        "errors.ETIMEDOUT": 10,
+        "vusers.failed": 10
+      },
+      "rates": {
+        "http.request_rate": 1
+      },
+      "http.request_rate": null,
+      "firstCounterAt": 1751540350106,
+      "lastCounterAt": 1751540359109,
+      "firstMetricAt": 1751540350106,
+      "lastMetricAt": 1751540359109,
+      "period": "1751540350000",
+      "summaries": {},
+      "histograms": {}
+    },
+    {
+      "counters": {
+        "vusers.created_by_name.0": 10,
+        "vusers.created": 10,
+        "http.requests": 10,
+        "plugins.metrics-by-endpoint./mysql-query.errors.ETIMEDOUT": 10,
+        "errors.ETIMEDOUT": 10,
+        "vusers.failed": 10
+      },
+      "rates": {
+        "http.request_rate": 1
+      },
+      "http.request_rate": null,
+      "firstCounterAt": 1751540360107,
+      "lastCounterAt": 1751540369111,
+      "firstMetricAt": 1751540360107,
+      "lastMetricAt": 1751540369111,
+      "period": "1751540360000",
+      "summaries": {},
+      "histograms": {}
+    },
+    {
+      "counters": {
+        "vusers.created_by_name.0": 4,
+        "vusers.created": 4,
+        "http.requests": 4,
+        "plugins.metrics-by-endpoint./mysql-query.errors.ETIMEDOUT": 10,
+        "errors.ETIMEDOUT": 10,
+        "vusers.failed": 10
+      },
+      "rates": {
+        "http.request_rate": 1
+      },
+      "http.request_rate": null,
+      "firstCounterAt": 1751540370106,
+      "lastCounterAt": 1751540379112,
+      "firstMetricAt": 1751540370106,
+      "lastMetricAt": 1751540379112,
+      "period": "1751540370000",
+      "summaries": {},
+      "histograms": {}
+    },
+    {
+      "counters": {
+        "plugins.metrics-by-endpoint./mysql-query.errors.ETIMEDOUT": 4,
+        "errors.ETIMEDOUT": 4,
+        "vusers.failed": 4
+      },
+      "rates": {},
+      "firstCounterAt": 1751540380108,
+      "lastCounterAt": 1751540383109,
+      "firstMetricAt": 1751540380108,
+      "lastMetricAt": 1751540383109,
+      "period": "1751540380000",
+      "summaries": {},
+      "histograms": {}
+    }
+  ]
+}

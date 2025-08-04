@@ -1,0 +1,18 @@
+config:
+  target: "http://127.0.0.1:8000"
+  phases:
+    - duration: 50     # run for 30 seconds
+      arrivalRate: 1  # 10 users per second
+
+scenarios:
+  - flow:
+      - get:
+          url: "/mysql-query"
+      - get:
+          url: "/mysql-query/schema"
+      - get:
+          url: "/mysql-query/status"
+      - post:
+          url: "/mysql-query/execute"
+          json:
+            sqlQuery: "SELECT * FROM users;"  # adjust based on your form input name
