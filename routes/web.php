@@ -12,4 +12,5 @@ Route::prefix('mysql-query')->group(function () {
     Route::post('/execute', [MySQLQueryController::class, 'executeQuery'])->name('mysql-query.execute');
     Route::get('/schema', [MySQLQueryController::class, 'getSchema'])->name('mysql-query.schema');
     Route::get('/status', [MySQLQueryController::class, 'checkStatus'])->name('mysql-query.status');
+    Route::post('/cleanup', [MySQLQueryController::class, 'cleanupDatabases'])->name('mysql-query.cleanup');
 });

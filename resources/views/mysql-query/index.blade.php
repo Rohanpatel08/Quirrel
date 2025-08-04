@@ -19,8 +19,8 @@
         <div class="bg-white rounded-lg shadow-lg p-6 mb-8">
             <h1 class="text-3xl font-bold text-gray-800 mb-2">🗄️ MySQL Query Executor</h1>
             <p class="text-gray-600 mb-2">Execute MySQL queries with individual database isolation</p>
-            <p style="color: red" class="mb-3" id="error-message"><strong>Note:</strong> Refreshing the page will reset the
-                database.</p>
+            {{-- <p style="color: red" class="mb-3" id="error-message"><strong>Note:</strong> Refreshing the page will reset the
+                database.</p> --}}
 
             <!-- Status Indicators -->
             <div class="flex space-x-4">
@@ -131,6 +131,10 @@
                             class="bg-gray-600 text-white px-4 py-2 rounded hover:bg-gray-700 transition-colors">
                             🗑️ Clear
                         </button>
+                        <button onclick="cleanupDatabase()"
+                            class="bg-red-600 text-white px-4 py-2 rounded hover:bg-red-700 transition-colors">
+                            🧹 Cleanup Database
+                        </button>
                     </div>
                 </div>
             </div>
@@ -150,7 +154,7 @@
 🔹 Each query runs in an isolated database
 🔹 Changes don't affect other executions  
 🔹 Fresh data for every run
-🔹 Automatic cleanup after execution</pre>
+🔹 Use "Cleanup Database" button to manually clean execution databases</pre>
                 </div>
             </div>
         </div>
@@ -181,7 +185,12 @@
 
         function clearEditor() {
             editor.setValue('');
-            document.getElementById('results').textContent = 'Ready to execute queries...';
+            document.getElementById('results').textContent = `Ready to execute queries...
+
+🔹 Each query runs in an isolated database
+🔹 Changes don't affect other executions  
+🔹 Fresh data for every run
+🔹 Use "Cleanup Database" button to manually clean execution databases`;
         }
 
         async function executeQuery() {
@@ -243,6 +252,43 @@
         editor.setOption('extraKeys', {
             'Ctrl-Enter': executeQuery
         });
+
+        async function cleanupDatabase() {
+            if (!confirm('Are you sure you want to cleanup all execution databases? This action cannot be undone.')) {
+                return;
+            }
+
+            const loading = document.getElementById('loading');
+            const results = document.getElementById('results');
+
+            // Show loading
+            loading.classList.remove('hidden');
+            results.textContent = 'Cleaning up databases...';
+
+            try {
+                const response = await fetch('/mysql-query/cleanup', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'X-CSRF-TOKEN': csrfToken,
+                    }
+                });
+
+                const data = await response.json();
+
+                if (data.success) {
+                    results.textContent = `✅ Cleanup completed successfully!\n\nDatabases cleaned: ${data.cleaned_count || 0}\nMessage: ${data.message || 'All execution databases have been removed.'}`;
+                } else {
+                    results.textContent = `❌ Cleanup Error: ${data.error || 'Unknown error occurred'}`;
+                }
+
+            } catch (error) {
+                console.error('Error:', error);
+                results.textContent = `❌ Network Error: ${error.message}`;
+            } finally {
+                loading.classList.add('hidden');
+            }
+        }
     </script>
 </body>
 

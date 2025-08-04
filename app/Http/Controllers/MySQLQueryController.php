@@ -27,6 +27,7 @@ class MySQLQueryController extends Controller
         try {
             // First, try to get the schema
             $schema = $this->mysqlService->getTemplateSchema();
+            // $getDBName = $this->mysqlService->getDatabaseName();
 
             // If schema is empty, the database might not exist
             if (empty($schema)) {
@@ -43,9 +44,12 @@ class MySQLQueryController extends Controller
                 // Get fresh schema after reset
                 $schema = $this->mysqlService->getTemplateSchema();
             }
-            $judge0Connected = $this->judge0Service->checkConnection();
+            // $judge0Connected = $this->judge0Service->checkConnection();
 
-            return view('mysql-query.index', compact('schema', 'judge0Connected'));
+            return view('mysql-query.index')->with([
+                'schema' => $schema,
+                'judge0Connected' => 'true',
+            ]);
         } catch (Exception $e) {
             // Log the error for debugging
             Log::error('Database initialization failed: ' . $e->getMessage());
@@ -126,6 +130,13 @@ class MySQLQueryController extends Controller
             'template_database_ready' => !empty($schema),
             'available_tables' => array_keys($schema),
         ]);
+    }
+
+    public function cleanupDatabases(): JsonResponse
+    {
+        $result = $this->mysqlService->cleanupAllExecutionDatabases();
+
+        return response()->json($result);
     }
     // private function createTemplateDatabaseIfNotExists(): void
     // {
@@ -366,4 +377,5 @@ class MySQLQueryController extends Controller
     //          throw $e;
     //      }
     //  }
+
 }

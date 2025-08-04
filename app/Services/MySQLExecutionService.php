@@ -13,6 +13,7 @@ class MySQLExecutionService
     private $executionHost;
     private $executionUsername;
     private $executionPassword;
+    private $execDBName = null;
 
     public function __construct()
     {
@@ -24,15 +25,25 @@ class MySQLExecutionService
 
     public function executeWithIsolation(string $sqlQuery): array
     {
-        $executionDatabase = $this->generateExecutionDatabase();
+        $existingDBs = DB::select('SHOW DATABASES');
+        $existingDBs = array_column($existingDBs, 'Database');
 
-        try {
+        $existingExecutionDBs = array_filter($existingDBs, function ($db) {
+            return strpos($db, 'exec_') === 0;
+        });
+        $existingExecutionDBs = array_values($existingExecutionDBs);
+        if (count($existingExecutionDBs) > 0) {
+            $executionDatabase = $existingExecutionDBs[0];
+        } else {
+            $executionDatabase = $this->generateExecutionDatabase();
+
             // Create execution database
             $this->createExecutionDatabase($executionDatabase);
 
             // Copy template data
             $this->copyTemplateData($executionDatabase);
-
+        }
+        try {
             // Execute query
             $result = $this->executeQuery($sqlQuery, $executionDatabase);
 
@@ -50,9 +61,6 @@ class MySQLExecutionService
                 'output' => '',
                 'database' => $executionDatabase,
             ];
-        } finally {
-            // Cleanup
-            $this->cleanupExecutionDatabase($executionDatabase);
         }
     }
 
@@ -336,6 +344,11 @@ class MySQLExecutionService
         }
     }
 
+    public function getDatabaseName()
+    {
+        return $this->execDBName;
+    }
+
     /**
      * Clear schema cache to force fresh retrieval
      */
@@ -348,5 +361,49 @@ class MySQLExecutionService
         Cache::forget("template_schema_" . $this->templateDatabase);
 
         Log::info("Schema cache cleared");
+    }
+
+    /**
+     * Clean up all execution databases
+     */
+    public function cleanupAllExecutionDatabases(): array
+    {
+        try {
+            // Get all databases that start with 'exec_'
+            $databases = DB::select('SHOW DATABASES');
+            $cleanedCount = 0;
+            $errors = [];
+
+            foreach ($databases as $database) {
+                $dbName = $database->Database ?? $database->database ?? null;
+
+                if ($dbName && strpos($dbName, 'exec_') === 0) {
+                    try {
+                        DB::statement("DROP DATABASE IF EXISTS `{$dbName}`");
+                        $cleanedCount++;
+                        Log::info("Cleaned up execution database: {$dbName}");
+                    } catch (Exception $e) {
+                        $errors[] = "Failed to cleanup database {$dbName}: " . $e->getMessage();
+                        Log::error("Failed to cleanup execution database {$dbName}: " . $e->getMessage());
+                    }
+                }
+            }
+
+            return [
+                'success' => true,
+                'cleaned_count' => $cleanedCount,
+                'errors' => $errors,
+                'message' => $cleanedCount > 0
+                    ? "Successfully cleaned up {$cleanedCount} execution database(s)"
+                    : "No execution databases found to clean up"
+            ];
+        } catch (Exception $e) {
+            Log::error('Error during database cleanup: ' . $e->getMessage());
+            return [
+                'success' => false,
+                'error' => $e->getMessage(),
+                'cleaned_count' => 0
+            ];
+        }
     }
 }
